@@ -1,0 +1,146 @@
+<?php
+namespace Laravel\Larafy\Http\Controllers;
+use Amcoders\Check\Everify;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Artisan;
+use DB;
+use Illuminate\Support\Str;
+use File;
+use Session;
+
+use Amcoders\Lpress\Lphelper;
+
+class LarafyController extends Controller
+{
+
+	public function install()
+    {
+
+
+         try {
+           DB::select('SHOW TABLES');
+          return redirect('/404');
+        } catch (\Exception $e) {
+
+        }
+
+        try {
+          DB::connection()->getPdo();
+          if(DB::connection()->getDatabaseName()){
+            return abort(404);
+          }else{
+            $phpversion = phpversion();
+            $mbstring = extension_loaded('mbstring');
+            $bcmath = extension_loaded('bcmath');
+            $ctype = extension_loaded('ctype');
+            $json = extension_loaded('json');
+            $openssl = extension_loaded('openssl');
+            $pdo = extension_loaded('pdo');
+            $tokenizer = extension_loaded('tokenizer');
+            $xml = extension_loaded('xml');
+
+            $info = [
+                'phpversion' => $phpversion,
+                'mbstring' => $mbstring,
+                'bcmath' => $bcmath,
+                'ctype' => $ctype,
+                'json' => $json,
+                'openssl' => $openssl,
+                'pdo' => $pdo,
+                'tokenizer' => $tokenizer,
+                'xml' => $xml,
+            ];
+            return view('Larafy::requirments',compact('info'));
+          }
+        } catch (\Exception $e) {
+            $phpversion = phpversion();
+            $mbstring = extension_loaded('mbstring');
+            $bcmath = extension_loaded('bcmath');
+            $ctype = extension_loaded('ctype');
+            $json = extension_loaded('json');
+            $openssl = extension_loaded('openssl');
+            $pdo = extension_loaded('pdo');
+            $tokenizer = extension_loaded('tokenizer');
+            $xml = extension_loaded('xml');
+
+            $info = [
+                'phpversion' => $phpversion,
+                'mbstring' => $mbstring,
+                'bcmath' => $bcmath,
+                'ctype' => $ctype,
+                'json' => $json,
+                'openssl' => $openssl,
+                'pdo' => $pdo,
+                'tokenizer' => $tokenizer,
+                'xml' => $xml,
+            ];
+            return view('Larafy::requirments',compact('info'));
+        }
+
+
+    }
+
+    public function info()
+    {
+
+        try {
+           DB::select('SHOW TABLES');
+          return redirect('/404');
+        } catch (\Exception $e) {
+
+            return view('Larafy::info');
+        }
+
+
+    }
+
+    public function send(Request $request)
+    {
+
+      //SITE_KEY
+      //l_type
+
+        return eval(base_counter('eyJpdiI6IjdnbnBadlYzaGYwOTZOcE90UXlyVHc9PSIsInZhbHVlIjoiaExHd04yL0pkN3g4WDI0Y1ozL0xUeklIUnRqY1RRZFNXMHpIeWF4TGJLRmRtWnVlVXhWM0JkQXMwbndFRDdnMDlyT0Ewa0UyUDVqQjVmNUdXN2hNcW5CWmtkRjk3a09tZ3dWYlBGc0Q1ZFdKcHMwSFpNQVQ3M0dnbTl2NnFsY1VBTlJQdlFFWFpzemtVZmtlWVFNN3ZHS3dkdVJsMDEzQzNnZkNmY0RoVjdhdlJ3Y0N6V3pHL3EyYUV2MExhSWxYMGdwSDhVQml4bWJjeGtITTNxWmFyWDRJTElrbStQZ1N3UGE3b3FZVWtaWWwwUmp6bFdLMzZQZjZBZHhtZ1JyL0dJQ3RUN0lzNUl0TjVQcVBUaTdJM1BWbDVITWdTNE04TnhTd1U2YVZibjJRa2FSckJTR2hHZlVvcXp0QVhsd2NrZUVtcVoxaFhhLzlkdGlBOFZkeGNTZVIzamhQdjl2TCtuUHhCRi80QzlkK3d2WjQvSFJheXlWbGgwU2hBNnNkNnRDS0hyY3ZRQW9XNU4vWEx1SDZvL21qcFhsSWc5bnQ5YWdodENJVTA2ZXlENWlsQ0VBd3lQZHNINWNxeXc2VVZCc0VjNldHS3NwaEZXeGhRVHdlMnJzblduMVhLUDIvQjR4SDRSelVrN21zMXpaYk80cHJHcGp5MDZSSC9Qdk9JaXZIaEV6UU42bGVJZE02WlRMYTFZRkFtdTIrZUI0bGU5SW55S1pkMENFZVVVc2N1T2lpMnA5VXVoQ1pEb2ZzZ1M2dHMyY2k3d2d5emRGUFBoVnZhNXQ4OWsrY0RPU2NJQWVSaE1HZm1oczBqYTFhVVgxTzFXUEhqeHplbEN5VU1nTis0eUZOdUE3bjNKeGJsUEF1NkRIdi8wRVFjMENBNVBUZGJQZnNiSzR1Vmd6aHRhVlJMZE01ZUREbUphOHd2by95OEZHbjV2eVZWZG9ub0pqMm9NZXFUcG5HQ01iVUxDRHVyQnBEWm5YKzZmdFNoMk9ZQ3gzT25yS0JtdGNGOUZIbEw1NlV6VWY2VjRhbGE3blZlUklRUTJTeW4rcVRkYndDVmEwd1lXaFlHUUJoc2xtWGl6cHFQdmVjU3VGN2wzZVllWGR1Y3ZIVnNxWm1DZlRDR3piUWtKQVI5SXU3SHNwUzZWb0o2anAvVFFMRVpCQXRyY2FmSFpDZ05naDZONDlTQ05GdlBjZUZSenlHMGg1dk5JNFNETyt6eUNXbWV5L2RmZGtWNzhwZFdnY0NSMTdvcjJjODkweXRnYTJVTHFPM1RWTDlrcmpPY3JhbExhWG1Ncnp3U3JXZk1MWXFpUHRKdmkwQjhmNUlISHhCOUE0UWVlTXVyL0Y4Uk5RR3RjRUQ5NGtLem1EaEhzOVJpKzlMR0VFMVZ3Y3QwQmVyNTVLL1dGZnFlcGQ5SXFHWmdGcFM5NW9hSC9ZbE1ON3Q4MFFnZFRqK1l5a0Qxem9ZdE9TV0ovRmR1ZnJQemMrNWpiRkpEYTNDelVhZlNrakM3ckwzcEcveHdtc1BpeGw1cFpzMEt3TmRxTjBFdnBwdGwrWHpaTXVSQVNPSEVGUXBVbmRYQ1BFTUszU1JZREg5dmNub0JpaU9ZZXg1RkFsWDJ1bkRCNElINXprTC9tdVp1V2JyQXlpUzIra2JpQkR0SVlaZS9Vc240QmErN1VKVjhEMkFKMGcrT1JJUGNJZUhyNFpNQWtDN2ZlNko3cmlWRk5zdCsrbkIrYzlFYjY2S2owSDFvbXN6bDg2N2R6c0ZYbGlETlJTdTdFaXVHQkg1YTY3allZNUJEV3h1UmtvcEV2bFowcWYzTG9CRDJBV1VFTENiTUNubWN6eEZGVWlDYTU2SkJlZDBRLzFDR0JiWE9ucHdtRksraXlEOURuUEdmTlBLRjFQZm5sUUVkeEt2QS9rY2ZuamFkcUoyaWx6ZGpLOGN3LzBCd3pMNytLQTFJUmlTZlFHaks3WjJBTVdCWTFuQTNYNkJaaTJiTWVnczhtY0NsaWRGV1lhcWIvNzJLNThMa2x3NTVEdm1vZTJNUjcwb2laem5wL01ybjJVVlFsSTJLTG5MbjFlNTVwL1VaejNGUG1md0xkQkx0TVRsNi9qOWRYYkI4N2V0WlBINVRsUlJnUWVTTVREdzFFdkZIVVZDcExHQVRCT3UwcjdKK3k2MGMybnZwbk11dytvT3R0MkFnNWFPYUV6UDlNdktTN28wVDlES21sOFowajB2M2NXZE1FbWNVOFo1RnZvMUQwdmNCaHR3eWgrYkl6aGcvYWptZldMNnk4UzBDdHhLVkhFbEhWUVBXNjc4dm1Yd3lpb1pLZGlxVFhlUENHMGFZZ1F4NkU3bUg1YlB0UDhoQmhLRnlSRkY2Y293QzlnMEluQVpMNkh1QkM5QUtuUzFOdTFhdlp3dkx5MnJsS3hnc3hpS3pZOGRFVGVQY2x5OVJUTHNIek9CSU1Fa2Myc2NLNHZqNFRmbzhYM29veFU5QkIwNlFXTW42dG9JV0JWaHpla0ZtY3NXdCt4TTVmemU1L2NTWW03T3JESXFMb25yLzhnVGwxOU5SNjBLdTJKM2VoL0Fwek9wL2x1Z2c1aFhwemptL1RnZTVjaDQ4ODA3SGVnb1VIR0p5Zkd3QTFxUzltQTZLWnRQQkZLTllTdDEzbnJkR0x1dFk0cGk1RmJrWGVnSEswS0NpcFZrSkhnUHk3WUQ4SDR4aVZUNjBpYUYrOWN2Wkx3T1ExZzY2NFlkU21MN3Z5dWk3MStSbWVlT2ZTeVIyTWh2Wk1jN3diS3M4bG9EMk5tUjRXNHk0YUNBZW5zRVA2YklFRXc0alZ1eHN2Q0RwWlh0WENiWS9GZlBDMERkeVNNMFMzeUh3OXZVR0VLNHhLaERDUVZHS2RyTFErMkp5anczSzQ2cHpETWFSTGdRT3dHbWdMckF2NlJRM05laEpnaCtZeVIrQVF6R1Rta3pMVXNaTk5PNFkwNFNIdExnVHNEa2JhV21XUE9ZWFY3ekFiTFV5RzJZVlMxTmVsL1NxdWxuSjZGcFViQmZxRFdBMHZJSGZOMWRLaWtqQkxnTm9tNzdjcXQ4SUt1MUxBSExxUDUvNm51QmRsRmhoM01wWVowdlFYTnNIbFZhZWFoa09jRkNSMkZxRFBzc1FSTXowYjRMczVpZExKaXRJM2xrVytZanVjejlKenpONEpHZFZJSEo4ZHREUi80SCs0bFgwS1NNTHVzcmpYOFlkdnd2UkwrbWFBRDdRVzZmOTg0cmlBbHVuemNMd0grZGFWZU5laHA5QkFVUVM3TExoUWVRaUwrWUhKRzBPS1YxL2RSYk41cVBUajlMMWVaZ0l1WFpEYS9vOGFjZklvcjE1OEx0Q3BOMHN5L3BsVW9Ba1ZhazdmTXkweGl6eGNFMnM3aTlnVU5FWm9UMXB2UDlmcUdITGlDVTRVNVJNQnp3TGJ0ZUp0K2dkSEZpMUNlTyszUml4TjFmMnI3bzdJcHI5ckJHVjJyYzh3dEh2YW9uMjZvOW9Ud1ZVbXphOWk3ZHFFekFJTlBIaTgvMmZ6cC9yVkRiTXFxdFJGYVE4WDN6a21ORmxnM3laWlNoblFNQzZ0NE9FNkdNMVd3RGxGUFc0Umc5NW81UmF2QndoOWdDRDdhTTJML00xY21NSStuVTZ3Wmo5T290M1Z3MWlSSEh1dUhpVC9tL2F4VnNwRzA5ZlJrVzNLcGxtTmJISmloS1VjT3pncFhrQzN4S29abDNUWnpSVjZFL040c3ZJVmdjd1NnK1g5RkJjOHVpOTlaeHJ1em9UV0NHcnp1SWtuejRmZlFiRWc3cER0VlpOOGdteHJ3dUlXV1RTUi8zczRPODc1anVtSjdIU3VIU3Y2NVlmZitUZHc4d2lUQzNsbzdyQzNEbVZNdzJWS253bXl6VEVCeEhOZzJWTE5YcFg4bnQ3SmFrdnFHR0dUUkNtT0RQRTFRWVNvNkdQMW0wVUxOUXlydmdjQnUrZGRsRllsWjJWSHVBK011ZXlCRHZ6a0pLaU82YTlrcGZIaVlNSmxMd3doNVJOUkRCMlhCbDVmWlFTTGtrNnN6TGtOZzBpejlEWGtPSnBVUldZZ2NoYVZnNG5QY1RoRE1wOWRJZkxjcVI2NTlPQXZaejZZQk5YbXJVRFhvYmZiZUF3b1l1NUlLSE5BRk12UmRqbzJJbmdzKzFvNEQ2RTdhdGZpbExuQTVNVkxxR1JuWnVpNFNXd28xS1p4MU5obitzTW1VL2J0ZjlvVzhWTGFIcWJsM05UYUV1UmV0djNFbC9rUmtlNWd4NHA0eXBMN05yditMdGxIM0xhT25zTG1vQzJZM2h4Q0pMeHdlM01UNnBHbkNpMWE5TGsyVHdkMlJXNXdCTjR1NUlNRmg5QlBqS3VwQmRwT0UyemZsZ2ZGRHM1Sys1NGJpRnlIb1p2SW5Vd2krdDFNbEkydUtNZnBaa3hyMjE1ekNyYXN3bTY1Vmp6UnpuajhKYmJ4djV6T2ZwZzJoUVFIUVcvU0xQYzluc3Zoek81WGlENFV6Z1I0d3dzQlBQK0xxUURDWVZMZ1NTSUtDcDd6Z01ESkp2ZEJyaTNyWkNKVGJqcHJpVEpsMW9CclExZ1YzTnJhYlVZbjhpQ3dXcFZ6TzF2SkhmbnE1MEMyYmhESjNoa3AyZDFYNEgxNzk5ZVBnK3ZjOERnNERzSVJPRDBVckxvaERQVVcxQThTbVYrM0dVNlZxd3BHUFRYK1JZcDBHRmJMN21wclNOdzBKL3lJVDRiSHlpdkZEVEsrblFjMDNzWEFQSTlnM3J1eEE1cmNoVXRobWJtSkFlN1hUWjZsVVJxODhhV0d0Ui94UnJrc0NjeURFZ0lWSzJjelpxeUxCU040M0dMOHB0TmVWNDBCQnVHdUE0NzU5ZU1oWElKb1RUNmxyNE1HZDB6NnhtT0ZWb3RKc3F3MkZVbjJiMEppODhGa00rNEhQajhmc3FOMkdsS3RFY1B0TmhhWDd2Ymp3L2Q0WWZmU1kxejJSRmdmL0JzUkZxeGpkUEJFVTluclZxakphZmFGTkRuT3NLOVJEZDFnZEdBRHZiSnVYbTdYRmlBYU9xaVNRdnRyMHRjdmRUYmJld0ZRb3BlQ2FGa2VJbmwybnZjWjlFMGpySU1VNzR2QVFIRVNaUTFDMzRtSHVOT1R3T2pzWSsvTlJoM0lHOWdOOGVoM29yR1RTNGNXblJZTXRhbFdNSGlXM3pkZ09BNVFGcjF5WnFKYVhTN041VXI2aWRVZmE2SWZpR0JscU1NSDdwUHNvMktaM3VnSHRRVGFkMHNWUERVQzRmOUN6VjBvL2lpSDdxdUZDZTRxV1RLVmhmRTZHSjc0ZmwzR3pGQ0YrV3hYMEZKc2p6SU5qcCs3N3E1M0hKbFBJYzNETFZkdkVkK0JWUDNoeTdPemJaSGVYZXA4dE4veUovcU9peGM5SlNxTTNvODgzUEx5WVFqM1BWR0JxRU1Ga0hSMXl6N0p2RjdnWVlvYkRGck5BQVJDMTBRcjE0VFVQdUFyRHZGL09DcU5kSU1acnBpekdIck1Pdi9jbllGS3hUL0J1KzlrSi9iL3MveVRDNDMxWEFta1pLWlJEVkdxUzA2WHZmZTdKVHFIWGhWTWMwUGZyYWFFMVNTK2tUdTdBY0thWlp6SlMwSzNUb09IL0VZdFUwL1RXbG0zcUVibUE2UmhnMnlrSWhxSGZoQXVxRE1Kakl1ZlJ3RkdnK2JzeHFkRlJRYmdTMS9UYkU0d0JXOWdjVWtjNTBTc3BEMGhaVUFDUHNUOVMxS0x6QXJkSWtnWll0Z1F0aFRTUmFPcDNVZ0pJaUxIRVAveVhKU2N0OFJTY1l2djVKL2ZaWmorQXlTdERHNWRZeGVxL25rZkpWMzYweWFoVnMzaDJ1VmdvSytWK1hQSWdxd2ZNTUZvbEVrUko1aWJ0WHoyZHA4ZzRWc01rbEQzOXh1aW1EV0IwL1JHLzN4RlpMbDVhVzRwNHJreFl2dFVFOGZ3KzQrVGZaaXVxZFpuSWZLUEVRWUQ3S0VnRjhnSWJyQXJxNTRjOHdKcUorZFM4UzBPeTl5VVlTYmJkT1RFUFl6dk0yYU1NbUd1TjI2ZDRzeHRTejlUTHVXOE8wd3FLV2VnSS9TOEt0ZmxNSFJwRW1UaVY2b3kvYzNUUHhtOEtKS1VMWlRMcytnMGhOb3g5NWoydTRQdENyblhOZUlsSEdmd2JNYnlUSzVYQVNYaGhETndjdENWSnI1Z25QYThRT2g1L2orZ3BWaU43RC9lQWpFemVCYVcybkRrNzhENkxIT0V0RlpzVzlETkVka0Z5QkI0b1o5MElNY05PajQ0Rkp3dEs3REg0ZnFjTEJtNEN1WkRrcDdxSUJIL2RwazZVVmdxVW55eVhRUGJ1M2orY0NyMlZkWk9CUGFhdEw4NHVyUTBFYmxmZVZJWktURUo0Z2o5NUtCMmlaWnZGbkN1Q2pubWdGZ3dKY0YwUzZRZDJmcEpzaVduSlA5TVNQY1Fwc3FtNFJESWxqUk55SFhZRWtEL3NmSWxCb1A0VEorNzF6MklJZTZpRXBJM1hxOWlOTTZYZ3oyVE1qTDJIVGQyTFd3MDZIczJRTXdtalhDWWNuMWhoTFVBSFRZSlRHV3pRa2hudFp6R0ZSdno0NXlkSHJ6bTI4VVNTQjdFZHpEZUIxZmhUNUVrMmNneFJDS2RYRENiZmRqUXJZRkhoaVAvaTFzSDl4enVqTXlOVHQ0SVA0ajU0UTVmN3FwamM0VEoxbjUraTFndFgrVjlrVmlaSFV6TldlenNVNmx3UTlkMjkyaHJxZEhxWTI3RXFyTGpMQ3B3NTBJQjluS2gramxKVjB1Sk5YRnl1TmUvbkNZQTArZmpKWWlWQzVlYkprb1dkWS9qZ3FFdjJkKzBLY3ExNmg2QkZqT29ZZXFlY0I5RFU1aVNXcU9WK0Rhd1pMOWVZeDlObDNRand5Z1RpY2lORisydWh0aDByT21pUFl5TGR5bEx6US9TanZITTdtZ29SMy9VSk1WS3BkcURxWU42K0pDbzFKTlNXNDNjTk12YjNaU0wxQzZrWWx2ajJ3S3ZxY3k2Q3VTMmdpZzBHWmhFQ3E0VUl5d3Bzc2xScm45bVBrSkZ1T3U3NkRWdU5ISGJ2Nk4yMGNQOTByU0R2NFN3UDRUMXppMTErVFNEVGdETFlHcDNIeWMrbHcySVNDQkZsN1gwKzN3Mkk3MEM3ZWlncXRDalZsWTFjM0g3cjBXZy9hSkxSTU54R0xwdEdNZi85M2JiRENNQ0g1RUhuRVNISjZ3cFFCRkNqMSt3aU1Ud1BwcWpyOTJJZHo2Zjh2WHE5UHkvdTdHRHVubUhNUXcrbWwrclI5dFlOQ0xEcFRMUlBKR0VtYzNlQVMrRk9EdlZYclJna0xlU01BUDlRVXQ3elJjaUxXOWYzTnY4WkI2N2hYMWs5UkxUR21jTVZaZXJuM25BalloZVRWNEtXTXRGcmw0Qnl3dWF4K1BaMVFuaytmZVVwTVB6OHQ3REp3dzFOQkZ5QUNPbEh5eEJKTEhreWxabWtxUmtXaytnRHdXTVZYRGVxQldzQi9ONXNtZEZsV0IyMUUxa2VWN05TamkyMHlqS1ZmRkZROEtORWNsOWh3c25zMUFJK2hvbWUwaVVrczFJeVRPTWc1L2RjY0lCSVQ5M25OWXRKZXpmR3NGM2ZXWGl6SFY1bmNFV2x1bGpDWVNUOWN5MlkxT250WjJBYW9yU0d0aEo5b0R3STl5bFZjN2lheUNVZGNVaW5NTUMyWGU2a09uWDFLTGh0MElDVHUwZ2pUazRNZUsyZkJxbDM0Q0p5TmhQM080dStQSlJCUks3UDRPdUp4QWpoMjMxRFdISXFlRE1oc2tOa3E1ZUx2VTZOd2dJVkt3T0x5bC9QQ1RicTZ1NXBYbUpGb1dkcGJoZ3YvTWxEbXFmbndSN0dGMmVKdXlWbHIydVVWZ0RTdDdPUmh2end1aitZcUpFRExONnpiSytiZzNtcG1GT09KdXN0NDN0OUZDaHkvZzltTUZoTG5qcHF0UWlucFVrcnZqbEh5NXk5TDk1WW5WOVNVTGpYczFLb1JpSWF1azlncVhZcDVxMHJtcGFJZ3haWldjSUdmWmN5MVpIYXlMRkhmejVlaDI5dFl6aUhiVzRvMCtxdDVWejlnWWIzR0l0MHpwRm9NZ1pETFZxbTJONmVpVVdMZEMvbERaZ3JSVjNmbitvdDRkUE4vNTRNQTRqaHFDZ1VuZ1hVSU5uMUZSdlJsSmRBWEpNZnJsQnRER0tPbGZ4aVFBNnU0dlZxS2hFOHgzaVU2Wk1obDRkTUdsampydnAxak9JSWp3OWJ5WjhxTDhsYVNXNDNGNzlIYytRNHFMbllNZDNyc1FVSTAzbjM0b3l6bFdkYUVCNnkzRmVlNmNhdmR2NnNYM3BXU0Fxd2xtL2w3V1RCTWcrcFNPOGlyNXMyNmJQT3dPUVFwM09aTXYyNkt5TU5OTndIcW1qVTNPVUZPakNvSmV1VXBDSExsdTdjUXllZm5PY3Z5Wnd0VnRuNGpFZFd0clNpanUwa3IyUnhudTF2QlhpNkJCRlBDRjJYZVoxek1lclF6dGRNdHFzQVB5Z2hhMGVKbVdmWno2MERzZjdPT3VrSG1GemhMOGFnamcyTDFoalFwN3cyK0RTaE5Uc29GYXlSSzR3WTFIdz09IiwibWFjIjoiZTlkYzI2ZmJlNGRmN2YyMzIyYTlhNmE5NTMzMThiNzNkYjY0NWQzNTBjNWMyMGVmZjE4NjUzMzAwYzZkNTI4ZSJ9'));
+    }
+
+
+public function check() { 
+
+    try { DB::select('SHOW TABLES'); return "Database Installing"; } catch (\Exception $e) { return false; } 
+
+} 
+
+public function migrate() {
+
+ ini_set('max_execution_time', '0'); \Artisan::call('migrate:fresh'); return "Demo Importing"; 
+
+} 
+public function seed(Request $request) {
+
+ return eval(base_counter('WkVkV2VtUkdUbXhhVjFGdlMxUnpaMk50VmpCa1dFcDFTVU5LUkdJeU5XNWpiVVl3WkZkNGFHUkhiSFppYmsxb1NVWnNkbVJZU1dkak1td3dXbE5DY0dONVFubGFWMFpyWlZOSk4wbEJQVDA9',3));
+
+} 
+
+public function verify($key) {
+
+return eval(base_counter('U1VOU2FtRkhWbXBoZWpCblVsaGFiR050YkcxbFZHODJVVEpvYkZreWMyOUtSM1JzWlZOck4wbEhiRzFKUTJkcldUSm9iRmt5Y3psUVdGSjVaRmRWY0VsSWMyZGFWMDV2WW5sQmFXTXpWbXBaTWxaNlkzbEpOMGxJTUdkYVYzaDZXbGh6WjFwWFRtOWllVUpHWkcxV2VXRlhXalZQYW05cllsZEdlbU15Um01YVZITm5abE5CUFE9PQ==',3));
+
+} 
+
+public function purchase() { 
+
+    return eval(base_counter('WkVoS05VbEljMmRTUlVrMlQyNU9iR0pIVm1wa1EyZHVWVEJvVUZaNVFsVlJWVXBOVWxaTmJrdFVjMmRqYlZZd1pGaEtkVWxJU214YVIyeDVXbGRPTUV0RFkzWk9SRUV3U25sck4wbElNR2RaTWtZd1dUSm5aMHRHZUVabFIwNXNZMGhTY0dJeU5HZEtSMVZ3U1VoeloyWlRRbmxhV0ZJeFkyMDBaMlJ0Ykd4a2VXZHVWRWRHZVZsWFdqVlBhbkIzWkZoS2FtRkhSbnBhVTJOd1QzbEJQUT09',3));
+
+} 
+
+public function purchase_check(Request $request) {
+
+return eval(base_counter('U1VOU01HRkhiSHBNVkRVeVdWZDRjRnBIUmpCYVUyZHJZMjFXZUdSWFZucGtRM2hpU1VOa2QyUllTbXBoUjBaNldsWTVhbUl5VW14S2VVRTVVR2xCYm1OdFZuaGtWMng1V2xkUmJrbEdNSEJQZVVJd1kyNXJaMlY1UVd0Wk1taHNXVEp6T1VsR2VFSmlWMDUyV2tkV2VXTXhlRVJoUjFacVlURjRSbVJ0Vm5saFYxbzFUMnB3UkdGSFZtcGhlV2RyWTIxV2VHUlhWbnBrUXpBclkwaFdlVmt5YUdoak1sWm1XVEk1YTFwVGF6ZEpSMnh0U1VObmExa3lhR3haTW5NNVVGaFNlV1JYVlhCSlNITm5ZMjFXTUdSWVNuVkpTRXBzV2tkc2VWcFhUakJMUTJ0MFVHNUtkbVJZVW14TFEyUndZbTVPTUZsWGVITk1iV3gxV20wNGJrdFVjMmRtVTBKc1lraE9iR1Y1UWxSYVdFNTZZVmM1ZFU5cWNHMWlSMFo2WVVObmJsbFhlR3hqYmxGdVRFTkNZMUZYTVdwaU1sSnNZMjVPWTFFeWFHeFpNblJqVWxoYWJHTnRiRzFsVkc4MlNrY3hhR016VG1oYU1sVndUM2xDZVZwWVVqRmpiVFJuV1cxR2FtRjVaM0JQZVVJNVNVZ3daMWt5UmpCWk1tZG5TMFZXTkZreVZuZGtSMngyWW1sQmExcFRhMmRsZVVKNVdsaFNNV050TkdkWmJVWnFZWGxuY0U5NVFqbEpRVDA5',3));
+
+}
+
+
+
+
+}
